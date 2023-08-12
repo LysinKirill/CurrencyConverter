@@ -1,0 +1,1 @@
+{"currency_code":"USD", "timestamp":1691868848, "rates":{"BIF":1.45, "MWK":0.45}}
