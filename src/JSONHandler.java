@@ -43,7 +43,7 @@ public class JSONHandler {
 
     public static ExchangeRateInfo getExchangeRateInfoFromJSON(JSONObject jsonObject) {
         String currencyCode = jsonObject.getString("currency_code");
-        Date date = new Date(jsonObject.getLong("timestamp"));
+        long timestamp = jsonObject.getLong("timestamp");
         HashMap<String, Double> exchangeRatesHashMap = new HashMap<>();
 
         JSONObject exchangeRates = jsonObject.getJSONObject("rates");
@@ -51,6 +51,6 @@ public class JSONHandler {
             String code = (String)currency_code;
             exchangeRatesHashMap.put(code, exchangeRates.getDouble(code));
         }
-        return new ExchangeRateInfo(currencyCode, date, exchangeRatesHashMap);
+        return new ExchangeRateInfo(currencyCode, timestamp, exchangeRatesHashMap);
     }
 }

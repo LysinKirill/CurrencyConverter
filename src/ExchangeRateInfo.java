@@ -1,14 +1,16 @@
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 
-public class ExchangeRateInfo {
-    private Date updateDate;
+public class ExchangeRateInfo implements Serializable {
+    private static final long serialVersionUID = 6529685098267757690L;
+    private long timestamp;
     private String currencyCode;
     private HashMap<String, Double> exchangeRates;
 
-    public ExchangeRateInfo(String currencyCode, Date updateDate, HashMap<String, Double> exchangeRates) {
+    public ExchangeRateInfo(String currencyCode, long timestamp, HashMap<String, Double> exchangeRates) {
         this.currencyCode = currencyCode;
-        this.updateDate = updateDate;
+        this.timestamp = timestamp;
         this.exchangeRates = exchangeRates;
     }
 
@@ -20,7 +22,7 @@ public class ExchangeRateInfo {
         return exchangeRates.get(currencyCode + code);
     }
 
-    public Date updateDate() {
-        return updateDate;
+    public Long timestamp() {
+        return timestamp;
     }
 }

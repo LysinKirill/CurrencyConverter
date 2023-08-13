@@ -18,8 +18,7 @@ public class APIHandler {
         try {
             connection = new URL(String.format("http://apilayer.net/api/live?access_key=%s&source=%s&format=1", API_KEY, currencyCode)).openConnection();
             InputStream is = connection.getInputStream();
-            JSONObject json = new JSONObject(JSONHandler.convertStreamToString(is));
-            return json;
+            return new JSONObject(JSONHandler.convertStreamToString(is));
         } catch (IOException e) {
             e.printStackTrace();
         }
