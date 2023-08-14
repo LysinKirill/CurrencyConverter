@@ -30,7 +30,7 @@ public class Main {
         sourceCurrencyBox.setBounds((int)(FRAME_WIDTH * 0.2), (int)(FRAME_HEIGHT * 0.3), (int)(FRAME_WIDTH * 0.15), (int)(FRAME_HEIGHT * 0.05));
         sourceCurrencyBox.setSelectedIndex(2);
 
-        final JComboBox<String>[] targetCurrencyBox = new JComboBox[]{new JComboBox<>(currencyCodes)};
+        final JComboBox[] targetCurrencyBox = new JComboBox[]{new JComboBox(currencyCodes)};
         targetCurrencyBox[0].setBounds((int)(FRAME_WIDTH * 0.6), (int)(FRAME_HEIGHT * 0.3), (int)(FRAME_WIDTH * 0.15), (int)(FRAME_HEIGHT * 0.05));
         targetCurrencyBox[0].setSelectedItem(0);
 
@@ -50,6 +50,7 @@ public class Main {
         jFrame.setResizable(false);
         jFrame.setLocation((SCREEN_SIZE.width - FRAME_WIDTH) / 2, (SCREEN_SIZE.height - FRAME_HEIGHT) / 2);
         jFrame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
+
         jFrame.setResizable(false);
         jFrame.setVisible(true);
 
@@ -71,59 +72,34 @@ public class Main {
         final String[] sourceCurrencyCode = {"USD"};
         final String[] targetCurrencyCode = {"RUB"};
 
-
-        //ExchangeRateInfo finalExchangeRateInfoUSD = exchangeRateInfoUSD;
         ExchangeRateInfo finalExchangeRateInfoUSD = exchangeRateInfoUSD;
 
-        sourceCurrencyBox.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent itemEvent) {
-                String s = ((String)itemEvent.getItem());
-                sourceCurrencyCode[0] = s.substring(0, s.length() - 1);
-                updateOutput(inputArea, outputArea, sourceCurrencyCode[0], targetCurrencyCode[0], finalExchangeRateInfoUSD);
-            }
+        sourceCurrencyBox.addItemListener(itemEvent -> {
+            String s = ((String)itemEvent.getItem());
+            sourceCurrencyCode[0] = s.substring(0, s.length() - 1);
+            updateOutput(inputArea, outputArea, sourceCurrencyCode[0], targetCurrencyCode[0], finalExchangeRateInfoUSD);
         });
 
-        targetCurrencyBox[0].addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent itemEvent) {
-                String s = ((String)itemEvent.getItem());
-                sourceCurrencyCode[0] = s.substring(0, s.length() - 1);
-                updateOutput(inputArea, outputArea, sourceCurrencyCode[0], targetCurrencyCode[0], finalExchangeRateInfoUSD);
-            }
+        targetCurrencyBox[0].addItemListener(itemEvent -> {
+            String s = ((String)itemEvent.getItem());
+            targetCurrencyCode[0] = s.substring(0, s.length() - 1);
+            updateOutput(inputArea, outputArea, sourceCurrencyCode[0], targetCurrencyCode[0], finalExchangeRateInfoUSD);
         });
 
 
 
         inputArea.addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent keyEvent) {
-            }
+            public void keyTyped(KeyEvent keyEvent) {}
 
             @Override
-            public void keyPressed(KeyEvent keyEvent) {
-            }
+            public void keyPressed(KeyEvent keyEvent) {}
 
             @Override
             public void keyReleased(KeyEvent keyEvent) {
                 updateOutput(inputArea, outputArea, sourceCurrencyCode[0], targetCurrencyCode[0], finalExchangeRateInfoUSD);
             }
         });
-
-//        inputArea.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent actionEvent) {
-//                outputArea.setText(Double.toString(ConvertCurrency(sourceCurrencyCode, targetCurrencyCode, Double.parseDouble(inputArea.getText()), finalExchangeRateInfoUSD)));
-//            }
-//        });
-//
-//        System.out.println(ConvertCurrency(firstCurrencyCode, secondCurrencyCode, 1, exchangeRateInfoUSD));
-
-    }
-
-    public static String getCurrencyCode() {
-        Scanner scanner = new Scanner(System.in);
-        return scanner.next();
     }
 
     public static void updateOutput(JTextField inputArea, JTextField outputArea, String sourceCurrencyCode, String targetCurrencyCode, ExchangeRateInfo exchangeRateInfoUSD) {
@@ -137,7 +113,7 @@ public class Main {
 
     public static double ConvertCurrency(String firstCurrencyCode, String secondCurrencyCode, double amount, final ExchangeRateInfo exchangeRateInfoUSD) {
         if(firstCurrencyCode.equals("USD"))
-            return secondCurrencyCode.equals("USD") ? 1 : amount * exchangeRateInfoUSD.getExchangeRate(secondCurrencyCode);
+            return secondCurrencyCode.equals("USD") ? amount : amount * exchangeRateInfoUSD.getExchangeRate(secondCurrencyCode);
         if(secondCurrencyCode.equals("USD"))
             return amount * 1d / exchangeRateInfoUSD.getExchangeRate(firstCurrencyCode);
         return amount * (1d / exchangeRateInfoUSD.getExchangeRate(firstCurrencyCode)) * exchangeRateInfoUSD.getExchangeRate(secondCurrencyCode);
